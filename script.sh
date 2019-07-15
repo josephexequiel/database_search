@@ -42,7 +42,7 @@ function check_match()
 }
 
 SEARCH_ARR=('1365d156a39f2873c6286ea051c6d51a4a1aeaa0.zip' '5cf792207827e2b80c7f04d8f70b2efb291eadf6.zip' '36ca6bf5da9432edecce30f8cbab94b9bc16d25b.zip' 'eb687e0b15f4de25efccd8eac72515f111844230.zip');
-FILE='/home/joseph/data.txt';
+FILE='data.txt';
 
 cat $FILE;
 load_db $FILE;
