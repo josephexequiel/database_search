@@ -64,4 +64,4 @@ fi;
 if [ -f "$FILE" ]; then
 		rm -rf "$FILE";
 fi;
-unset SEARCH_ARR FINALDATA_ARR RETVAL FILE;
+unset SEARCH_ARR FINALDATA_ARR RETVAL FILE BOOLVAR;
