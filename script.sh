@@ -1,5 +1,5 @@
 #!/bin/bash
-  
+
 function load_db()
 {
         LOADFILE="$1";
@@ -15,6 +15,7 @@ function load_db()
                 FINALDATA_ARR+=($(echo ${DATA_ARR[-1]}));
                 unset DATA_ARR DATAVAR;
         done < $LOADFILE;
+        unset LOADFILE;
 }
 
 function check_match()
@@ -41,12 +42,26 @@ function check_match()
         return $RETVAL;
 }
 
+FILE='/var/tmp/data_db.out';
+sqlite3 "/Library/Application Support/Apple/AssetCache/Data/AssetInfo.db" 'select * from ZASSET;' > "$FILE";
+load_db "$FILE";
 SEARCH_ARR=('1365d156a39f2873c6286ea051c6d51a4a1aeaa0.zip' '5cf792207827e2b80c7f04d8f70b2efb291eadf6.zip' '36ca6bf5da9432edecce30f8cbab94b9bc16d25b.zip' 'eb687e0b15f4de25efccd8eac72515f111844230.zip');
-FILE='data.txt';
 
-cat $FILE;
-load_db $FILE;
 for SEARCHMODE in ${SEARCH_ARR[*]};
 do
-        check_match $SEARCHMODE;
+        if check_match $SEARCHMODE;
+				BOOLVAR='0';
+        fi;
 done;
+
+if [[ $BOOLVAR -eq 0 ]]; then
+		echo "File(s) found." > /var/tmp/result.out;
+else
+		echo "File(s) not found or missing" > /var/tmp/result.out;
+fi;
+
+# Cleanup Mode
+if [ -f "$FILE" ]; then
+		rm -rf "$FILE";
+fi;
+unset SEARCH_ARR FINALDATA_ARR RETVAL FILE;
