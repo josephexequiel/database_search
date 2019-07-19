@@ -1,35 +1,39 @@
 #!/bin/bash
-
-function parethesisCounter()
+  
+function parenthesisCounter()
 {
-	input="$1";
-	openCounter=0;
-	closeCounter=0;
-	declare -a container;
-	
-	for data in $(seq 1 ${#input});
-	do
-		container[$data]="${input:$data:1}";
-	done;
+        input="$1";
+        openCounter=0;
+        closeCounter=0;
+        declare -a container;
 
-	declare -p container;
-	
-	for data in $(seq 1 ${#input});
-	do
-		if [[ $data = '(' ]]; then
-			++openCounter;
-		elif [[ $data = ')' ]]; then
-			++closeCounter;
-		fi;
-	done;
-	
-	if [[ "$closeCounter" -eq "$openCounter" ]]; then
-		result=$closeCounter;	
-	elif [[ "$closeCounter" -gt "$openCounter" ]]; then
-		result=$closeCounter;
-	elif [[ "$closeCounter" -lt "$openCounter" ]]; then
-		result=$openCounter;
-	fi;
+        for data in $(seq 0 ${#input});
+        do
+                container[$data]="${input:$data:1}";
+        done;
+
+
+        for data in $(seq 0 ${#input});
+        do
+                if [[ ${container[data]} == '(' ]]; then
+                        ((++openCounter));
+                elif [[ ${container[data]} == ')' ]]; then
+                        ((++closeCounter));
+                fi;
+        done;
+
+        if [[ "$closeCounter" -eq "$openCounter" ]]; then
+                result=$closeCounter;
+        elif [[ "$closeCounter" -gt "$openCounter" ]]; then
+                result=$closeCounter;
+        elif [[ "$closeCounter" -lt "$openCounter" ]]; then
+                result=$openCounter;
+        fi;
+
+        echo $result;
+        unset container;
+
+        return 0;
 }
 
 parenthesisCounter '(())';
