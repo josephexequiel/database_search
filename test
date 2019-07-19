@@ -5,6 +5,14 @@ function parethesisCounter()
 	input="$1";
 	openCounter=0;
 	closeCounter=0;
+	declare -a container;
+	
+	for data in $(seq 1 ${#input});
+	do
+		container[$data]="${input:$data:1}";
+	done;
+
+	declare -p container;
 	
 	for data in $(seq 1 ${#input});
 	do
@@ -22,8 +30,6 @@ function parethesisCounter()
 	elif [[ "$closeCounter" -lt "$openCounter" ]]; then
 		result=$openCounter;
 	fi;
-	
-	return result;
 }
 
 parenthesisCounter '(())';
